@@ -3,7 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { AppComponent } from './app.component';
-import { CoreModule } from './core/core-module';
+import { CoreModule } from './core/core.module';
 import { routes } from './app.routes';
 
 @NgModule({
