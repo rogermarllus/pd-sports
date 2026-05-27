@@ -12,37 +12,37 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
-  login(email: string, senha: string): Observable<any> {
+  login(email: string, password: string): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/users`).pipe(
       map((users) => {
-        const user = users.find((u) => u.email === email && u.password === senha);
+        const user = users.find((u) => u.email === email && u.password === password);
         if (!user) throw new Error('Email ou senha inválidos');
         return user;
       }),
-      tap((user) => this.salvarSessao(user)),
+      tap((user) => this.saveSession(user)),
     );
   }
 
-  registrar(dados: any): Observable<any> {
+  register(data: any): Observable<any> {
     return this.http.get<any[]>(`${this.apiUrl}/users`).pipe(
       map((users) => {
-        if (users.find((u) => u.email === dados.email)) {
+        if (users.find((u) => u.email === data.email)) {
           throw new Error('Email já cadastrado');
         }
-        return dados;
+        return data;
       }),
-      map((dados) => ({
-        name: dados.name,
-        email: dados.email,
-        phone: dados.phone,
-        birthDate: dados.birthDate,
-        password: dados.password,
+      map((data) => ({
+        name: data.name,
+        email: data.email,
+        phone: data.phone,
+        birthDate: data.birthDate,
+        password: data.password,
         isAdmin: false,
       })),
-      tap((novoUsuario) =>
+      tap((newUser) =>
         this.http
-          .post(`${this.apiUrl}/users`, novoUsuario)
-          .pipe(tap((criado) => this.salvarSessao(criado)))
+          .post(`${this.apiUrl}/users`, newUser)
+          .pipe(tap((created) => this.saveSession(created)))
           .subscribe(),
       ),
     );
@@ -53,21 +53,21 @@ export class AuthService {
     localStorage.removeItem('cart');
   }
 
-  salvarSessao(user: any): void {
+  saveSession(user: any): void {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(user));
   }
 
-  getUsuarioAtual(): any {
+  getCurrentUser(): any {
     const data = localStorage.getItem(this.STORAGE_KEY);
     return data ? JSON.parse(data) : null;
   }
 
-  isLogado(): boolean {
-    return !!this.getUsuarioAtual();
+  isLogged(): boolean {
+    return !!this.getCurrentUser();
   }
 
   isAdmin(): boolean {
-    const user = this.getUsuarioAtual();
+    const user = this.getCurrentUser();
     return user?.isAdmin === true;
   }
 }
