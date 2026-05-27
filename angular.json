@@ -10,9 +10,23 @@
     "pd-sports": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": { "standalone": false },
-        "@schematics/angular:directive": { "standalone": false },
-        "@schematics/angular:pipe": { "standalone": false }
+        "@schematics/angular:component": {
+          "standalone": false,
+          "type": "component"
+        },
+        "@schematics/angular:directive": {
+          "standalone": false,
+          "type": "directive"
+        },
+        "@schematics/angular:pipe": {
+          "standalone": false
+        },
+        "@schematics/angular:service": {
+          "type": "service"
+        },
+        "@schematics/angular:module": {
+          "type": "module"
+        }
       },
       "root": "",
       "sourceRoot": "src",
