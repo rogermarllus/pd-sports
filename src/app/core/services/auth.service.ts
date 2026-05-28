@@ -2,12 +2,14 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { map, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
+import { API_CONFIG } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'https://69b83d57ffbcd0286097a0a9.mockapi.io/api';
+  // Utiliza a URL base configurada em 'api.config.ts'
+  private apiUrl = API_CONFIG.baseUrlUsers;
   private readonly STORAGE_KEY = 'user';
 
   constructor(private http: HttpClient) {}
