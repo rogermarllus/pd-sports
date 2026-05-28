@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap } from 'rxjs';
 import { AuthService } from './auth.service';
+import { API_CONFIG } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService {
-  private apiUrl = 'https://69b83d57ffbcd0286097a0a9.mockapi.io/api';
+  private apiUrl = API_CONFIG.baseUrlUsers;
 
   // BehaviorSubject permite que qualquer componente acesse o usuário atual de forma reativa
   private currentUser = new BehaviorSubject<any>(null);
