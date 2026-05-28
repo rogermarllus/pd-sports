@@ -1,0 +1,238 @@
+<!-- ===================== DESKTOP NAV ===================== -->
+<nav class="navbar navigation-bar d-none d-md-flex" aria-label="Navegação principal">
+  <div class="container-fluid d-flex flex-wrap align-items-center justify-content-between">
+    <div class="logo">
+      <a routerLink="/"><img src="/img/svg/logo.svg" alt="logotipo" /></a>
+    </div>
+
+    <form
+      class="d-flex flex-grow-1 mx-3 container-search"
+      (submit)="buscar(searchInput.value); $event.preventDefault()"
+    >
+      <input
+        #searchInput
+        class="form-control search-input"
+        type="search"
+        placeholder="Busque por um produto"
+      />
+      <button class="btn text-white ms-2" type="submit">
+        <i data-lucide="search" class="icon-lg"></i>
+      </button>
+    </form>
+
+    <div class="d-flex gap-3 fs-5">
+      <a routerLink="/cart" class="text-white p-2 rounded cart-link-wrapper" aria-label="Carrinho">
+        <i data-lucide="handbag" class="icon-lg"></i>
+        <span class="cart-badge" [class.visible]="((cartService.items$ | async)?.length ?? 0) > 0">
+          {{ (cartService.items$ | async)?.length }}
+        </span>
+      </a>
+
+      @if (usuario) {
+        <a
+          [routerLink]="usuario.isAdmin ? '/admin' : '/user'"
+          class="text-white p-2 rounded d-flex align-items-center gap-2"
+        >
+          <i data-lucide="user" class="icon-lg"></i>
+          <span>{{ primeiroNome }}</span>
+        </a>
+      } @else {
+        <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
+          <i data-lucide="user" class="icon-lg"></i>
+        </a>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== MOBILE NAV ===================== -->
+<nav
+  class="navbar navigation-bar d-flex d-md-none nav-mobile-top"
+  aria-label="Navegação principal mobile"
+>
+  <div class="container-fluid d-flex align-items-center justify-content-between">
+    <div class="logo">
+      <a routerLink="/"><img src="/img/svg/logo.svg" alt="logotipo" /></a>
+    </div>
+    <div class="d-flex gap-3 fs-5">
+      <a routerLink="/cart" class="text-white p-2 rounded cart-link-wrapper" aria-label="Carrinho">
+        <i data-lucide="handbag" class="icon-lg"></i>
+        <span class="cart-badge" [class.visible]="((cartService.items$ | async)?.length ?? 0) > 0">
+          {{ (cartService.items$ | async)?.length }}
+        </span>
+      </a>
+
+      @if (usuario) {
+        <a
+          [routerLink]="usuario.isAdmin ? '/admin' : '/user'"
+          class="text-white p-2 rounded d-flex align-items-center gap-2"
+        >
+          <i data-lucide="user" class="icon-lg"></i>
+          <span class="user-name-mobile">{{ primeiroNome }}</span>
+        </a>
+      } @else {
+        <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
+          <i data-lucide="user" class="icon-lg"></i>
+        </a>
+      }
+    </div>
+  </div>
+</nav>
+
+<!-- ===================== BUSCA MOBILE ===================== -->
+<div class="d-flex d-md-none nav-mobile-search">
+  <form
+    class="container-search-mobile"
+    (submit)="buscar(searchMobile.value); $event.preventDefault()"
+  >
+    <input
+      #searchMobile
+      class="search-input-mobile"
+      type="search"
+      placeholder="Busque por um produto"
+    />
+    <button class="btn-search-mobile" type="submit" aria-label="Buscar">
+      <span class="divider-search-mobile"></span>
+      <i data-lucide="search" class="icon-lg"></i>
+    </button>
+  </form>
+</div>
+
+<!-- ===================== MENU SECUNDÁRIO (BARRA AMARELA) ===================== -->
+<nav class="menu-bar py-2 menu-bar-second" aria-label="Categorias de produtos">
+  <div class="container modality-menu">
+    <div class="dropdown container-dropdown-options">
+      <button
+        class="btn button-dropdown-nav dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        data-bs-boundary="viewport"
+        data-bs-popper-config='{"strategy":"fixed"}'
+      >
+        <i class="bi bi-grid"></i> Todas as modalidades
+      </button>
+      <ul class="dropdown-menu dropdown-modality">
+        <li>
+          <a
+            class="dropdown-item"
+            routerLink="/modality"
+            [queryParams]="{ modality: 'Artes Marciais' }"
+            >Artes marciais</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Basquete' }"
+            >Basquete</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Caminhada' }"
+            >Caminhada</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Ciclismo' }"
+            >Ciclismo</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Corrida' }"
+            >Corrida</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Crossfit' }"
+            >Crossfit</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Futebol' }"
+            >Futebol</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Futsal' }"
+            >Futsal</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Musculação' }"
+            >Musculação</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Natação' }"
+            >Natação</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Skate' }"
+            >Skate</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Surf' }"
+            >Surf</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Tênis' }"
+            >Tênis</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Vôlei' }"
+            >Vôlei</a
+          >
+        </li>
+        <li>
+          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Yoga' }"
+            >Yoga</a
+          >
+        </li>
+      </ul>
+    </div>
+    <ul class="list-unstyled mb-0 list-second-options">
+      <li>
+        <a
+          routerLink="/modality"
+          [queryParams]="{ modality: 'Futebol' }"
+          class="menu-link link-underline"
+          >Futebol</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/modality"
+          [queryParams]="{ modality: 'Basquete' }"
+          class="menu-link link-underline"
+          >Basquete</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/modality"
+          [queryParams]="{ modality: 'Corrida' }"
+          class="menu-link link-underline"
+          >Corrida</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/modality"
+          [queryParams]="{ modality: 'Musculação' }"
+          class="menu-link link-underline"
+          >Musculação</a
+        >
+      </li>
+      <li>
+        <a
+          routerLink="/modality"
+          [queryParams]="{ modality: 'Natação' }"
+          class="menu-link link-underline"
+          >Natação</a
+        >
+      </li>
+    </ul>
+  </div>
+</nav>
