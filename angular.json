@@ -23,9 +23,6 @@
         },
         "@schematics/angular:service": {
           "type": "service"
-        },
-        "@schematics/angular:module": {
-          "type": "module"
         }
       },
       "root": "",
