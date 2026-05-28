@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { forkJoin, map, Observable } from 'rxjs';
+import { API_CONFIG } from '../config/api.config';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-  private apiUrl = 'https://69b83d23ffbcd02860979f9b.mockapi.io/api';
+  private apiUrl = API_CONFIG.baseUrlProducts;
 
   // O MockAPI limita 100 itens por coleção, produtos acima do id 100 estão em /products2
   getEndpointById(id: number) {
