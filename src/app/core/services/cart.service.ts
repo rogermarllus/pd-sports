@@ -24,7 +24,7 @@ export class CartService {
   }
 
   // Se o produto já existe no carrinho, delega ao incrementItem em vez de duplicar
-  adicionarItem(product: any): void {
+  addItem(product: any): void {
     const cart = this.items.getValue();
     const exists = cart.find((i) => i.id === product.id);
 
@@ -48,7 +48,7 @@ export class CartService {
   }
 
   // Quantidade 1 remove o item; acima de 1 apenas decrementa
-  decrementarItem(id: number): void {
+  decrementItem(id: number): void {
     const cart = this.items.getValue();
     const item = cart.find((i) => i.id === id);
 
@@ -64,7 +64,7 @@ export class CartService {
   }
 
   // Remove um item do carrinho pelo id
-  removerItem(id: number): void {
+  removeItem(id: number): void {
     const newCart = this.items.getValue().filter((i) => i.id !== id);
     this.items.next(newCart);
     this.saveOnStorage(newCart);

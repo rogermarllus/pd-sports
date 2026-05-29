@@ -1,0 +1,27 @@
+<div class="col">
+  <article class="card-produto" (click)="navigateToDetails()">
+    <div class="img-card">
+      <img
+        [src]="imagePath"
+        [alt]="produto?.name"
+        (error)="$any($event.target).src = '/img/products/product-placeholder.avif'"
+      />
+      @if (destaque) {
+        <span class="badge-oferta">EM OFERTA</span>
+      }
+    </div>
+
+    <h3>{{ produto?.name }}</h3>
+
+    <div class="card-rodape">
+      <p>{{ produto?.price | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</p>
+      <button
+        class="btn-add-cart"
+        aria-label="Adicionar ao carrinho"
+        (click)="addToCart($event)"
+      >
+        <i data-lucide="handbag" class="icon icon-card"></i>
+      </button>
+    </div>
+  </article>
+</div>
