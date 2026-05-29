@@ -14,7 +14,7 @@
     <h3>{{ produto?.name }}</h3>
 
     <div class="card-rodape">
-      <p>{{ produto?.price | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}</p>
+      <p>{{ produto?.price | currencyBrl }}</p>
       <button
         class="btn-add-cart"
         aria-label="Adicionar ao carrinho"
