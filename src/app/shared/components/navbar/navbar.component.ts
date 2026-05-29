@@ -20,16 +20,16 @@ export class NavbarComponent {
     lucide.createIcons();
   }
 
-  get usuario() {
+  get user() {
     return this.authService.getCurrentUser();
   }
 
-  get primeiroNome(): string {
-    return this.usuario?.name?.trim().split(' ')[0] || '';
+  get firstName(): string {
+    return this.user?.name?.trim().split(' ')[0] || '';
   }
 
-  buscar(termo: string) {
-    if (!termo.trim()) return;
-    this.router.navigate(['/search'], { queryParams: { query: termo.trim() } });
+  search(term: string) {
+    if (!term.trim()) return;
+    this.router.navigate(['/search'], { queryParams: { query: term.trim() } });
   }
 }
