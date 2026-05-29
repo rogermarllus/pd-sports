@@ -7,7 +7,7 @@
 
     <form
       class="d-flex flex-grow-1 mx-3 container-search"
-      (submit)="buscar(searchInput.value); $event.preventDefault()"
+      (submit)="search(searchInput.value); $event.preventDefault()"
     >
       <input
         #searchInput
@@ -28,13 +28,13 @@
         </span>
       </a>
 
-      @if (usuario) {
+      @if (user) {
         <a
-          [routerLink]="usuario.isAdmin ? '/admin' : '/user'"
+          [routerLink]="user.isAdmin ? '/admin' : '/user'"
           class="text-white p-2 rounded d-flex align-items-center gap-2"
         >
           <i data-lucide="user" class="icon-lg"></i>
-          <span>{{ primeiroNome }}</span>
+          <span>{{ firstName }}</span>
         </a>
       } @else {
         <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
@@ -62,13 +62,13 @@
         </span>
       </a>
 
-      @if (usuario) {
+      @if (user) {
         <a
-          [routerLink]="usuario.isAdmin ? '/admin' : '/user'"
+          [routerLink]="user.isAdmin ? '/admin' : '/user'"
           class="text-white p-2 rounded d-flex align-items-center gap-2"
         >
           <i data-lucide="user" class="icon-lg"></i>
-          <span class="user-name-mobile">{{ primeiroNome }}</span>
+          <span class="user-name-mobile">{{ firstName }}</span>
         </a>
       } @else {
         <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
@@ -83,7 +83,7 @@
 <div class="d-flex d-md-none nav-mobile-search">
   <form
     class="container-search-mobile"
-    (submit)="buscar(searchMobile.value); $event.preventDefault()"
+    (submit)="search(searchMobile.value); $event.preventDefault()"
   >
     <input
       #searchMobile
