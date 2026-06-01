@@ -5,7 +5,14 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false,
 })
 export class CurrencyBrlPipe implements PipeTransform {
-  transform(valor: number): string {
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+  transform(valor: number | null | undefined): string {
+    if (valor == null) {
+      return '';
+    }
+
+    return valor.toLocaleString('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    });
   }
 }
