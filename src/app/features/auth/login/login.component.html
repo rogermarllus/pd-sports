@@ -1,1 +1,78 @@
-<p>login works!</p>
+<form id="form-login" [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div id="card-login">
+    <figure>
+      <img src="/img/svg/logo.svg" alt="logo-PD-Sports" id="img-logo-pd-sports" />
+      <figcaption>logo PD Sports</figcaption>
+    </figure>
+
+    <h2 id="title-login">Entrar</h2>
+
+    <div class="container-input">
+      <label class="subtitle-input">Seu e-mail</label>
+      <input
+        type="email"
+        class="input-email"
+        placeholder="E-mail"
+        formControlName="email"
+        appFieldError
+        [control]="emailCtrl"
+      />
+    </div>
+
+    <div id="container-password">
+      <div class="container-input">
+        <label class="subtitle-input">Sua senha</label>
+        <div id="container-input-password">
+          <input
+            [type]="showPassword ? 'text' : 'password'"
+            class="input-password"
+            placeholder="Senha"
+            autocomplete="off"
+            formControlName="senha"
+            appFieldError
+            [control]="senhaCtrl"
+          />
+          <i
+            [class]="showPassword ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
+            (click)="togglePasswordVisibility()"
+          ></i>
+        </div>
+      </div>
+      <a routerLink="/auth/recuperar-senha">
+        <p id="recovery-password">Esqueci minha senha</p>
+      </a>
+    </div>
+
+    @if (apiError) {
+      <p class="error api-error">
+        <svg
+          class="icon-alert"
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <line x1="12" y1="8" x2="12" y2="12" />
+          <line x1="12" y1="16" x2="12.01" y2="16" />
+        </svg>
+        {{ apiError }}
+      </p>
+    }
+
+    <div id="container-buttons-login">
+      <a routerLink="/" id="link-back">Voltar</a>
+      <button type="submit" id="btn-login" [disabled]="isLoading">
+        {{ isLoading ? 'Entrando...' : 'Entrar' }}
+      </button>
+    </div>
+
+    <p id="txt-quest-authenticated">
+      Não possui uma conta?
+      <a routerLink="/auth/cadastro" id="link-signup">Cadastrar-se</a>
+    </p>
+  </div>
+</form>

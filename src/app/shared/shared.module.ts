@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { RouterLink } from '@angular/router';
+import { RouterLink, RouterModule } from '@angular/router';
 import { FooterComponent } from './components/footer/footer.component';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { CurrencyBrlPipe } from './pipes/currency-brl-pipe';
@@ -16,7 +16,7 @@ import { FieldErrorDirective } from './directives/field-error.directive';
     CurrencyBrlPipe,
     FieldErrorDirective,
   ],
-  imports: [ReactiveFormsModule, FormsModule, RouterLink, AsyncPipe],
+  imports: [ReactiveFormsModule, FormsModule, RouterModule, AsyncPipe],
   exports: [
     NavbarComponent,
     FooterComponent,
@@ -25,6 +25,7 @@ import { FieldErrorDirective } from './directives/field-error.directive';
     FieldErrorDirective,
     ReactiveFormsModule,
     FormsModule,
+    RouterLink,
   ],
 })
 export class SharedModule {}
