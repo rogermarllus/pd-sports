@@ -28,19 +28,16 @@ export class FieldErrorDirective implements OnInit, OnDestroy {
   ngOnInit(): void {
     if (!this.control) return;
 
-    // Cria o <span> de erro logo após o <input>
     this.errorSpan = this.renderer.createElement('span');
     this.renderer.addClass(this.errorSpan, 'error');
     this.renderer.addClass(this.errorSpan, 'fv-error');
-    const parent = this.renderer.parentNode(this.el.nativeElement);
-    const nextSibling = this.el.nativeElement.nextSibling;
-    if (nextSibling) {
-      this.renderer.insertBefore(parent, this.errorSpan, nextSibling);
-    } else {
-      this.renderer.appendChild(parent, this.errorSpan);
-    }
 
-    // Reage a qualquer mudança de valor ou status
+    const container =
+      this.el.nativeElement.closest('.container-input') ??
+      this.renderer.parentNode(this.el.nativeElement);
+
+    this.renderer.appendChild(container, this.errorSpan);
+
     this.subscription = this.control.statusChanges?.subscribe(() => this.update()) ?? null;
 
     this.renderer.listen(this.el.nativeElement, 'blur', () => {
