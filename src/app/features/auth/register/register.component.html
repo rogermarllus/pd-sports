@@ -1,1 +1,242 @@
-<p>register works!</p>
+<form id="form-register" [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div id="card-register">
+        <figure>
+            <img src="/img/svg/logo.svg" alt="logo-PD-Sports" id="img-logo-pd-sports" />
+            <figcaption>logo PD Sports</figcaption>
+        </figure>
+
+        <h2 id="title-register">Cadastrar-se</h2>
+
+        <!-- ===== Grid desktop (2 colunas) ===== -->
+        <section id="section-input">
+            <div class="container-input">
+                <label class="subtitle-input">Seu nome completo</label>
+                <input type="text" class="input-name" placeholder="Nome completo" formControlName="nome" appFieldError
+                    [control]="nomeCtrl" />
+            </div>
+
+            <div class="container-input">
+                <label class="subtitle-input">Seu e-mail</label>
+                <input type="email" class="input-email" placeholder="E-mail" formControlName="email" appFieldError
+                    [control]="emailCtrl" />
+            </div>
+
+            <div class="container-input">
+                <label class="subtitle-input">Seu telefone</label>
+                <input type="tel" class="input-phone" placeholder="Telefone" formControlName="telefone" appFieldError
+                    [control]="telefoneCtrl" />
+            </div>
+
+            <div class="container-input">
+                <label class="subtitle-input">Data de nascimento</label>
+                <div id="container-input-date">
+                    <input type="date" class="input-date-of-birth" formControlName="dataNascimento" appFieldError
+                        [control]="dataNascimentoCtrl" />
+                    <i class="fa-regular fa-calendar-days"></i>
+                </div>
+            </div>
+
+            <div class="container-input">
+                <label class="subtitle-input">Crie uma senha</label>
+                <div class="container-input-password">
+                    <input [type]="showPassword ? 'text' : 'password'" class="input-password" placeholder="Senha"
+                        autocomplete="off" formControlName="senha" appFieldError [control]="senhaCtrl" />
+                    <i [class]="showPassword ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
+                        (click)="togglePasswordVisibility()"></i>
+                </div>
+            </div>
+
+            <div class="container-input">
+                <label class="subtitle-input">Confirme a senha</label>
+                <div class="container-input-password">
+                    <input [type]="showConfirmPassword ? 'text' : 'password'" class="input-confirm-password"
+                        placeholder="Confirme a senha" autocomplete="off" formControlName="confirmSenha" appFieldError
+                        [control]="confirmSenhaCtrl" />
+                    <i [class]="showConfirmPassword ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
+                        (click)="toggleConfirmPasswordVisibility()"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Layout mobile (coluna + grid 2x2) ===== -->
+        <section id="section-input-mobile">
+            <div class="container-input-name-and-email-mobile">
+                <div class="container-input">
+                    <label class="subtitle-input">Seu nome completo</label>
+                    <input type="text" class="input-name" placeholder="Nome completo" formControlName="nome" />
+                </div>
+
+                <div class="container-input">
+                    <label class="subtitle-input">Seu e-mail</label>
+                    <input type="email" class="input-email" placeholder="E-mail" formControlName="email" />
+                </div>
+            </div>
+
+            <div id="container-grid-2-2-mobile">
+                <div class="container-input">
+                    <label class="subtitle-input">Seu telefone</label>
+                    <input type="tel" class="input-phone" placeholder="Telefone" formControlName="telefone" />
+                </div>
+
+                <div class="container-input">
+                    <label class="subtitle-input">Data de nascimento</label>
+                    <div id="container-input-date">
+                        <input type="date" class="input-date-of-birth" formControlName="dataNascimento" />
+                        <i class="fa-regular fa-calendar-days"></i>
+                    </div>
+                </div>
+
+                <div class="container-input">
+                    <label class="subtitle-input">Crie uma senha</label>
+                    <div class="container-input-password">
+                        <input [type]="showPassword ? 'text' : 'password'" class="input-password" placeholder="Senha"
+                            autocomplete="off" formControlName="senha" />
+                        <i [class]="showPassword ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
+                            (click)="togglePasswordVisibility()"></i>
+                    </div>
+                </div>
+
+                <div class="container-input">
+                    <label class="subtitle-input">Confirme a senha</label>
+                    <div class="container-input-password">
+                        <input [type]="showConfirmPassword ? 'text' : 'password'" class="input-confirm-password"
+                            placeholder="Confirme a senha" autocomplete="off" formControlName="confirmSenha" />
+                        <i [class]="showConfirmPassword ? 'fa-regular fa-eye' : 'fa-regular fa-eye-slash'"
+                            (click)="toggleConfirmPasswordVisibility()"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== Erro de senhas divergentes ===== -->
+        @if (form.hasError('senhasDivergentes') && confirmSenhaCtrl.touched) {
+        <p class="error api-error">
+            <svg class="icon-alert" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            As senhas não coincidem
+        </p>
+        }
+
+        <!-- ===== Erro da API ===== -->
+        @if (apiError) {
+        <p class="error api-error">
+            <svg class="icon-alert" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {{ apiError }}
+        </p>
+        }
+
+        <!-- ===== Termos de uso ===== -->
+        <div id="termo-uso">
+            <input type="checkbox" id="input-checkbox" [(ngModel)]="termsAccepted"
+                [ngModelOptions]="{ standalone: true }" />
+            <label id="txt-checkbox-input" (click)="openTermsModal()" (keydown.enter)="openTermsModal()" tabindex="0"
+                role="button" aria-label="Abrir Termos de Uso">
+                Termos de uso
+            </label>
+        </div>
+
+        <!-- ===== Rodapé ===== -->
+        <div id="container-footer-register">
+            <p id="txt-quest-authenticated">
+                Possui uma conta?
+                <a routerLink="/auth/login" id="link-login">Entrar</a>
+            </p>
+
+            <div id="container-buttons-login">
+                <a routerLink="/auth/login" id="link-back">Voltar</a>
+                <button type="submit" id="btn-register" [disabled]="isLoading || !termsAccepted">
+                    {{ isLoading ? 'Cadastrando...' : 'Cadastrar' }}
+                </button>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- ===== Modal Termos de Uso ===== -->
+@if (showTermsModal) {
+<div class="modal-overlay" (click)="closeTermsModal()" role="dialog" aria-modal="true"
+    aria-labelledby="modalTermosLabel">
+    <div class="modal-box" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+            <h3 id="modalTermosLabel">
+                Termos de Uso — <span class="destaque">PD Sports</span>
+            </h3>
+        </div>
+
+        <article class="modal-body">
+            <p>
+                Bem-vindo à <strong>PD Sports</strong>. Ao acessar e utilizar este site, você concorda com os presentes
+                Termos de Uso.
+            </p>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>1. Aceitação dos Termos</h4>
+                <p>
+                    Ao acessar, navegar ou realizar qualquer compra na plataforma da PD Sports, o usuário declara ter
+                    lido,
+                    compreendido e concordado integralmente com estes Termos de Uso. Caso não concorde, o usuário deve
+                    interromper imediatamente o uso do site.
+                </p>
+            </section>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>2. Cadastro do Usuário</h4>
+                <p>Para realizar compras, o usuário poderá precisar se cadastrar com informações verdadeiras e
+                    completas. O usuário é responsável por:</p>
+                <ul>
+                    <li>Manter a confidencialidade de seus dados de login</li>
+                    <li>Atualizar suas informações sempre que necessário</li>
+                    <li>Notificar imediatamente qualquer uso não autorizado da conta</li>
+                </ul>
+            </section>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>3. Preços e Pagamentos</h4>
+                <p>Os preços estão em moeda local. Formas aceitas: cartões de crédito/débito, Pix e outros meios
+                    disponibilizados na plataforma.</p>
+            </section>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>4. Trocas, Devoluções e Reembolsos</h4>
+                <ul>
+                    <li>Prazo legal de arrependimento: 7 dias após o recebimento</li>
+                    <li>Produto em perfeito estado, sem uso e com embalagem original</li>
+                </ul>
+            </section>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>5. Propriedade Intelectual</h4>
+                <p>Todo o conteúdo do site é de propriedade da PD Sports, sendo proibida sua reprodução sem autorização.
+                </p>
+            </section>
+            <hr />
+
+            <section class="termos-secao">
+                <h4>6. Legislação Aplicável</h4>
+                <p>Estes Termos são regidos pelas leis da República Federativa do Brasil, incluindo a LGPD.</p>
+            </section>
+
+            <p>Ao utilizar a plataforma da PD Sports, você declara estar ciente e de acordo com todos os termos aqui
+                descritos.</p>
+        </article>
+
+        <div class="modal-footer">
+            <button type="button" class="botao" (click)="closeTermsModal()">Voltar</button>
+        </div>
+    </div>
+</div>
+}
