@@ -6,6 +6,11 @@ import { MainLayoutComponent } from './layouts/main-layout/main-layout.component
 export const routes: Routes = [
   {
     path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    path: '',
     component: MainLayoutComponent,
     children: [
       {

@@ -6,6 +6,11 @@ import { AuthService } from '../../../core/services/auth.service';
 import { RouterModule, provideRouter } from '@angular/router';
 
 describe('ProductCardComponent', () => {
+  beforeAll(() => {
+    (globalThis as any).lucide = {
+      createIcons: () => {},
+    };
+  });
   let component: ProductCardComponent;
   let fixture: ComponentFixture<ProductCardComponent>;
 

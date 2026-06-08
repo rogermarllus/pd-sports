@@ -1,0 +1,300 @@
+<section id="hero-carousel" class="carousel slide" data-bs-ride="carousel">
+
+    <nav class="carousel-indicators">
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="0" class="active" aria-current="true"
+            aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        <button type="button" data-bs-target="#hero-carousel" data-bs-slide-to="3" aria-label="Slide 4"></button>
+    </nav>
+
+    <div class="carousel-inner">
+
+        <article class="carousel-item active hero-slide hero-1">
+            <section class="container d-flex align-items-center">
+                <header class="text-white col-12 col-md-8 col-lg-6">
+                    <h1 class="display-5 title-banner">
+                        CHUTEIRA ADIDAS<span class="break-line">F50 CLUB AMARELO</span>
+                        <span class="break-line">NEON</span>
+                    </h1>
+                    <p class="lead"><span class="break-line">Feita para quem </span><span class="break-line">joga em
+                            alto nível.</span></p>
+                    <a [routerLink]="['/products', 5]" class="btn btn-custom-outline rounded-pill px-4">Ver Detalhes</a>
+                </header>
+            </section>
+        </article>
+
+        <article class="carousel-item hero-slide hero-2">
+            <section class="container d-flex align-items-center">
+                <header class="text-white col-12 col-md-8 col-lg-6">
+                    <h1 class="display-5 title-banner">BOLA UEFA <br> CHAMPIONS <br> LEAGUE</h1>
+                    <p class="lead"><span class="break-line">Superfície texturizada,</span> precisão e desempenho.</p>
+                    <a [routerLink]="['/products', 2]" class="btn btn-custom-outline rounded-pill px-4">Ver Detalhes</a>
+                </header>
+            </section>
+        </article>
+
+        <article class="carousel-item hero-slide hero-3">
+            <section class="container d-flex align-items-center">
+                <header class="text-white col-12 col-md-8 col-lg-6">
+                    <h1 class="display-5 title-banner">
+                        <span class="break-line">TÊNIS CROSSFIT </span>
+                        <span class="break-line">DUAL </span>
+                        <span class="break-line">DENSITY</span>
+                    </h1>
+                    <p class="lead">
+                        <span class="break-line">Confortável,</span>
+                        <span class="break-line">compacto e</span>
+                        <span class="break-line">contextual.</span>
+                    </p>
+                    <a [routerLink]="['/products', 151]" class="btn btn-custom-outline rounded-pill px-4">Ver
+                        Detalhes</a>
+                </header>
+            </section>
+        </article>
+
+        <article class="carousel-item hero-slide hero-4">
+            <section class="container d-flex align-items-center">
+                <header class="text-white col-12 col-md-8 col-lg-6">
+                    <h1 class="display-5 title-banner">
+                        <span class="break-line">CAMISA POLO</span>
+                        <span class="break-line">SKATE LISTRAS </span>
+                        <span class="break-line">VERTICAIS</span>
+                    </h1>
+                    <p class="lead">
+                        <span class="break-line">Estilo clássico que </span>
+                        <span class="break-line">nunca sai de cena.</span>
+                    </p>
+                    <a [routerLink]="['/products', 88]" class="btn btn-custom-outline rounded-pill px-4">Ver
+                        Detalhes</a>
+                </header>
+            </section>
+        </article>
+
+    </div>
+</section>
+
+<main>
+
+    <section>
+        <div
+            class="container-fluid d-flex justify-content-between flex-wrap gap-3 text-center container-section-benefits">
+            <section class="flex-fill section-benefits">
+                <i data-lucide="Truck" class="icon-benefits"></i>
+                <div>
+                    <h2>Frete grátis</h2>
+                    <h3>Para todo Brasil</h3>
+                </div>
+            </section>
+            <section class="flex-fill section-benefits">
+                <i data-lucide="ShieldCheck" class="icon-benefits"></i>
+                <div>
+                    <h2>Garantia</h2>
+                    <h3>Estendida</h3>
+                </div>
+            </section>
+            <section class="flex-fill section-benefits">
+                <i data-lucide="CreditCard" class="icon-benefits"></i>
+                <div>
+                    <h2>Parcelamento</h2>
+                    <h3>Sem juros</h3>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="title-section-offers">PRODUTOS EM DESTAQUE</h2>
+
+        @if (isLoadingProducts) {
+        <p class="txt-loading">Carregando...</p>
+        } @else if (featuredProducts.length === 0) {
+        <p class="txt-loading">Nenhum produto encontrado.</p>
+        } @else {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+            @for (produto of featuredProducts; track produto.id) {
+            <app-product-card [produto]="produto" [destaque]="true" />
+            }
+        </div>
+        }
+    </section>
+
+    <section class="container">
+        <header>
+            <h2 class="title-section-offers">MELHORES OFERTAS DO DIA</h2>
+        </header>
+
+        <section class="d-md-none" aria-label="Ofertas mobile">
+            <div id="carouselOfertasMobile" class="carousel slide carrousel-best-offers" data-bs-ride="carousel">
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselOfertasMobile"
+                    data-bs-slide="prev" aria-label="Oferta anterior">
+                    <span class="custom-arrow"><i data-lucide="ChevronLeft" class="icon-best-offers"></i></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselOfertasMobile"
+                    data-bs-slide="next" aria-label="Próxima oferta">
+                    <span class="custom-arrow"><i data-lucide="ChevronRight" class="icon-best-offers"></i></span>
+                </button>
+
+                <div class="carousel-inner">
+                    @for (offer of bestOffers; track offer.id; let first = $first) {
+                    <div class="carousel-item" [class.active]="first">
+                        <article class="container-card-best-offers">
+                            <figure
+                                class="text-white position-relative overflow-hidden p-0 container-card-best-offers-child">
+                                <div class="bg-secondary" [ngClass]="offer.cssClass"></div>
+                                <figcaption
+                                    class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
+                                    <header>
+                                        <h3>{{ offer.title }}</h3>
+                                        <p class="fw-bold value-card-best-offers">{{ offer.price }}</p>
+                                    </header>
+                                    <a [routerLink]="['/products', offer.id]"
+                                        class="btn btn-card-best-offers rounded-pill px-4">
+                                        Ver detalhes
+                                    </a>
+                                </figcaption>
+                            </figure>
+                        </article>
+                    </div>
+                    }
+                </div>
+            </div>
+        </section>
+
+        <section class="d-none d-md-block" aria-label="Ofertas desktop">
+            <div id="carouselOfertasDesktop" class="carousel slide carrousel-best-offers" data-bs-ride="carousel">
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselOfertasDesktop"
+                    data-bs-slide="prev" aria-label="Oferta anterior">
+                    <span class="custom-arrow"><i data-lucide="ChevronLeft" class="icon-best-offers"></i></span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselOfertasDesktop"
+                    data-bs-slide="next" aria-label="Próxima oferta">
+                    <span class="custom-arrow"><i data-lucide="ChevronRight" class="icon-best-offers"></i></span>
+                </button>
+
+                <div class="carousel-inner">
+                    @for (pair of bestOffersDesktop; track pair.first.id; let first = $first) {
+                    <div class="carousel-item" [class.active]="first">
+                        <div class="row g-4">
+                            <article class="col-md-6 container-card-best-offers">
+                                <figure
+                                    class="text-white position-relative overflow-hidden p-0 container-card-best-offers-child">
+                                    <div class="bg-secondary" [ngClass]="pair.first.cssClass"></div>
+                                    <figcaption
+                                        class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
+                                        <header>
+                                            <h3>{{ pair.first.title }}</h3>
+                                            <p class="fw-bold value-card-best-offers">{{ pair.first.price }}</p>
+                                        </header>
+                                        <a [routerLink]="['/products', pair.first.id]"
+                                            class="btn btn-card-best-offers rounded-pill px-4">
+                                            Ver detalhes
+                                        </a>
+                                    </figcaption>
+                                </figure>
+                            </article>
+
+                            @if (pair.second) {
+                            <article class="col-md-6 container-card-best-offers">
+                                <figure
+                                    class="text-white position-relative overflow-hidden p-0 container-card-best-offers-child">
+                                    <div class="bg-secondary" [ngClass]="pair.second.cssClass"></div>
+                                    <figcaption
+                                        class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
+                                        <header>
+                                            <h3>{{ pair.second.title }}</h3>
+                                            <p class="fw-bold value-card-best-offers">{{ pair.second.price }}</p>
+                                        </header>
+                                        <a [routerLink]="['/products', pair.second.id]"
+                                            class="btn btn-card-best-offers rounded-pill px-4">
+                                            Ver detalhes
+                                        </a>
+                                    </figcaption>
+                                </figure>
+                            </article>
+                            }
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+        </section>
+    </section>
+
+    <section class="container section-modalitys">
+        <header>
+            <h2 class="text-uppercase mb-4 title-modality">Modalidades</h2>
+        </header>
+
+        <div class="container-list-cards-modalitys">
+
+            <button id="prevBtn" aria-label="Anterior" [disabled]="prevDisabled"
+                [style.opacity]="prevDisabled ? '0.5' : '1'" (click)="scrollPrev()">
+                <i data-lucide="ChevronLeft"></i>
+            </button>
+
+            <ul #carouselTrack id="carouselTrack"
+                class="d-flex gap-3 overflow-hidden scroll-smooth list-unstyled m-0 p-0">
+                @for (modality of modalities; track modality.route) {
+                <li class="card-item-modalitys">
+                    <a routerLink="/modality" [queryParams]="{ modality: modality.route }" class="card-link-modalyts">
+                        <article class="card-custom">
+                            <img [src]="'img/' + modality.image" [alt]="modality.label" class="img-card-modalitys" />
+                            <h3 class="title-card-modalitys">{{ modality.label }}</h3>
+                        </article>
+                    </a>
+                </li>
+                }
+            </ul>
+
+            <button id="nextBtn" class="end-0" aria-label="Próximo" [disabled]="nextDisabled"
+                [style.opacity]="nextDisabled ? '0.5' : '1'" (click)="scrollNext()">
+                <i data-lucide="ChevronRight"></i>
+            </button>
+
+        </div>
+    </section>
+
+    <section class="newsletter-section">
+        <div class="container container-newsletter">
+            <div class="row align-items-center">
+
+                <div class="col-12 col-lg-6 mb-3 mb-lg-0">
+                    <h2 class="mb-0">
+                        <strong><span>Cadastre</span></strong> o seu email e fique<br>
+                        por dentro de nossas ofertas!
+                    </h2>
+                </div>
+
+                <div class="col-12 col-lg-6">
+                    <div class="d-flex flex-column flex-sm-row gap-3">
+                        <input type="email" class="form-control" placeholder="Digite seu email" />
+                        <button type="button" class="botao btn-news-letter">Cadastrar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<div class="modal fade" id="modal-pedido-indisponivel" tabindex="-1" aria-labelledby="modal-pedido-titulo"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-pedido-content">
+            <div class="modal-pedido-header">
+                <i data-lucide="Check" class="modal-pedido-icon"></i>
+                <h5 class="modal-pedido-titulo" id="modal-pedido-titulo">Detalhes do pedido</h5>
+            </div>
+            <div class="modal-pedido-body">
+                <p>Produto adicionado à sacola.</p>
+            </div>
+            <div class="modal-pedido-footer">
+                <button type="button" class="btn-modal-fechar" data-bs-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
+</div>
