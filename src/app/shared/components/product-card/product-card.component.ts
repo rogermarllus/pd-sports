@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { AuthService } from '../../../core/services/auth.service';
 
+declare const lucide: any;
+
 @Component({
   selector: 'app-product-card',
   standalone: false,
@@ -18,6 +20,10 @@ export class ProductCardComponent {
   private cartService = inject(CartService);
   private authService = inject(AuthService);
   private router = inject(Router);
+
+  ngAfterViewInit() {
+    lucide.createIcons();
+  }
 
   get imagePath(): string {
     const map: Record<string, string> = {
