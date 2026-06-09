@@ -1,1 +1,192 @@
-<p>product-details works!</p>
+@if (isLoading) {
+  <section class="details-section container">
+    <p class="txt-estado">Carregando...</p>
+  </section>
+}
+
+@else if (hasError) {
+  <section class="details-section container">
+    <p class="txt-erro">{{ errorMessage }}</p>
+  </section>
+}
+
+@else if (product) {
+  <section class="details-section container">
+    <div class="container-detalhes">
+      <aside class="info-produto">
+        <section class="avaliacoes">
+          <p><strong>4.5</strong></p>
+          <div>
+            <i data-lucide="star" class="icone"></i>
+            <p
+              class="destaque"
+              data-bs-toggle="modal"
+              data-bs-target="#modalAvaliacoes"
+              role="button"
+              aria-label="Abrir Avaliações"
+              tabindex="0"
+            >
+              Ver Avaliações
+            </p>
+          </div>
+        </section>
+
+        <dl>
+          <dt>Modalidade:</dt>
+          <dd>{{ product.modality || '—' }}</dd>
+          <br />
+          <dt>Disponibilidade:</dt>
+          <dd [class.destaque]="isAvailable" [class.txt-indisponivel]="!isAvailable">
+            {{ availability }}
+          </dd>
+        </dl>
+
+        <section class="info-compra">
+          <div>
+            <i data-lucide="badge-check" class="icone-destaque"></i>
+            <p>Produto original</p>
+          </div>
+          <div>
+            <i data-lucide="rotate-ccw" class="icone-destaque"></i>
+            <p>Troca em até 30 dias</p>
+          </div>
+          <div>
+            <i data-lucide="package" class="icone-destaque"></i>
+            <p>Envio rápido e seguro</p>
+          </div>
+          <div>
+            <i data-lucide="shield-check" class="icone-destaque"></i>
+            <p>Garantia do fabricante</p>
+          </div>
+        </section>
+
+        <p class="info-alerta">
+          Atenção: verifique o tamanho ou especificações antes de finalizar a compra.
+        </p>
+      </aside>
+
+      <img
+        [src]="imagePath"
+        [alt]="product.name"
+        class="img-produto"
+        (error)="$any($event.target).src = '/img/products/product-placeholder.avif'"
+      />
+
+      <section class="detalhes-produto">
+        <h1>{{ product.name }}</h1>
+
+        <article>
+          <p><strong>Cor:</strong> {{ product.color || '—' }}</p>
+
+          @if (variations.length > 0) {
+            <p><strong>Tamanho:</strong></p>
+            <div>
+              @for (v of variations; track v) {
+                <button
+                  class="btn-tamanho"
+                  [class.active]="selectedVariation === v"
+                  (click)="selectVariation(v)"
+                >
+                  {{ v }}
+                </button>
+              }
+            </div>
+          }
+        </article>
+
+        <div>
+          <p>
+            <strong class="produto-preco">{{ product.price | currencyBrl }}</strong>
+          </p>
+          <p>em até 6x sem juros</p>
+        </div>
+
+        <button class="botao" (click)="addToCart()" [disabled]="!isAvailable">
+          Adicionar ao Carrinho
+        </button>
+
+        @if (feedbackMessage) {
+          <p
+            class="feedback-carrinho"
+            [class.feedback-success]="feedbackType === 'success'"
+            [class.feedback-error]="feedbackType === 'error'"
+          >
+            {{ feedbackMessage }}
+          </p>
+        }
+      </section>
+
+      <section class="descricao-produto">
+        <h2>Descrição:</h2>
+        <p>{{ product.description }}</p>
+      </section>
+    </div>
+  </section>
+
+  <div
+    class="modal fade"
+    id="modalAvaliacoes"
+    tabindex="-1"
+    aria-labelledby="modalAvaliacoesLabel"
+    aria-modal="true"
+    role="dialog"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title destaque" id="modalAvaliacoesLabel">Avaliações</h3>
+          <div>
+            <div class="avaliacao-geral">
+              <p>4.5</p>
+              <img
+                src="/img/svg/4.5-estrelas.svg"
+                class="avaliacoes-estrelas"
+                alt="Avaliação de quatro estrelas e meia"
+              />
+            </div>
+            <small>4 avaliações</small>
+          </div>
+        </div>
+
+        <article class="modal-body">
+          <h4>Avaliações em destaque</h4>
+
+          <section class="secao">
+            <h5>Juliana Rocha</h5>
+            <img src="/img/svg/4.5-estrelas.svg" alt="4.5 estrelas" class="avaliacoes-estrelas" />
+            <small>12-03-2026</small>
+            <p>Ótimo custo-benefício, recomendo.</p>
+          </section>
+          <hr />
+
+          <section class="secao">
+            <h5>Beatriz Teixeira</h5>
+            <img src="/img/svg/5-estrelas.svg" alt="5 estrelas" class="avaliacoes-estrelas" />
+            <small>20-02-2026</small>
+            <p>Produto de qualidade razoável, cumpre sua função.</p>
+          </section>
+          <hr />
+
+          <section class="secao">
+            <h5>Bruno Martins</h5>
+            <img src="/img/svg/4.5-estrelas.svg" alt="4.5 estrelas" class="avaliacoes-estrelas" />
+            <small>12-01-2026</small>
+            <p>Entrega o que promete. A experiência até agora foi positiva.</p>
+          </section>
+          <hr />
+
+          <section class="secao">
+            <h5>Carlos Oliveira</h5>
+            <img src="/img/svg/4-estrelas.svg" alt="4 estrelas" class="avaliacoes-estrelas" />
+            <small>29-11-2025</small>
+            <p>Gostei da compra.</p>
+          </section>
+        </article>
+
+        <div class="modal-footer">
+          <button type="button" class="botao" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}

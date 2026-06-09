@@ -29,17 +29,14 @@ export interface SortOption {
 export class ModalitiesComponent implements OnInit, OnDestroy {
   private readonly destroy$ = new Subject<void>();
 
-  // ── Estado da página ──────────────────────────────────────────────────────
   currentModality = '';
   isLoading = true;
   hasError = false;
 
-  // ── Produtos ──────────────────────────────────────────────────────────────
   private allProducts: any[] = [];
   filteredProducts: any[] = [];
   popularProducts: any[] = [];
 
-  // ── Filtros ───────────────────────────────────────────────────────────────
   currentRange: PriceRange = 'all';
   currentSort: SortOrder = null;
 
@@ -57,7 +54,6 @@ export class ModalitiesComponent implements OnInit, OnDestroy {
     { label: 'Limpar filtro', value: null },
   ];
 
-  // ── Labels dos botões de filtro ───────────────────────────────────────────
   get priceLabel(): string {
     return this.priceRangeOptions.find((o) => o.value === this.currentRange)?.label ?? 'Preço';
   }
@@ -123,8 +119,6 @@ export class ModalitiesComponent implements OnInit, OnDestroy {
       });
   }
 
-  // ── Filtros e ordenação ───────────────────────────────────────────────────
-
   setRange(range: PriceRange): void {
     this.currentRange = range;
     this.applyFiltersAndSort();
@@ -164,8 +158,6 @@ export class ModalitiesComponent implements OnInit, OnDestroy {
     this.currentSort = null;
   }
 
-  // ── Carrinho ──────────────────────────────────────────────────────────────
-
   addToCart(product: any, event: Event): void {
     event.stopPropagation();
 
@@ -181,8 +173,6 @@ export class ModalitiesComponent implements OnInit, OnDestroy {
 
     this.cartService.addItem(product);
   }
-
-  // ── Utilitários ───────────────────────────────────────────────────────────
 
   private shuffle<T>(array: T[]): T[] {
     const arr = [...array];

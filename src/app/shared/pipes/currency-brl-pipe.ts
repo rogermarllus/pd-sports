@@ -5,12 +5,23 @@ import { Pipe, PipeTransform } from '@angular/core';
   standalone: false,
 })
 export class CurrencyBrlPipe implements PipeTransform {
-  transform(valor: number | null | undefined): string {
-    if (valor == null) {
+  transform(valor: number | string | null | undefined): string {
+    if (valor == null || valor === '') {
       return '';
     }
 
-    return valor.toLocaleString('pt-BR', {
+    let numericValue: number;
+    if (typeof valor === 'string') {
+      const cleanedValue = valor.replace(/[R$\s]/g, '').replace(/\./g, '').replace(',', '.');
+      numericValue = Number(cleanedValue);
+      if (!Number.isFinite(numericValue)) {
+        return valor;
+      }
+    } else {
+      numericValue = valor;
+    }
+
+    return numericValue.toLocaleString('pt-BR', {
       style: 'currency',
       currency: 'BRL',
     });
