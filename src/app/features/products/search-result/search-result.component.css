@@ -1,0 +1,47 @@
+:host {
+  display: block;
+  background-image: none;
+}
+
+.search-section {
+  padding-top: 60px;
+  padding-bottom: 60px;
+  color: var(--cor-branca);
+  font-family: var(--fonte-montserrat);
+}
+
+.cabecalho-lista-produtos {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5em;
+}
+
+.title-modality-section {
+  color: var(--cor-destaque);
+  font-size: var(--titulo-sessao-desktop);
+  font-weight: bold;
+  margin: 0;
+}
+
+.txt-estado {
+  color: var(--cor-branca);
+  font-family: var(--fonte-montserrat);
+  font-size: var(--texto-desktop);
+  text-align: center;
+  padding: 40px 0;
+}
+
+/* ===================== RESPONSIVIDADE ===================== */
+
+@media (max-width: 470px) {
+  .cabecalho-lista-produtos {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5em;
+  }
+
+  .title-modality-section {
+    font-size: var(--titulo-sessao-mobile);
+  }
+}
