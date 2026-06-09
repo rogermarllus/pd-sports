@@ -30,6 +30,6 @@ export class NavbarComponent {
 
   search(term: string) {
     if (!term.trim()) return;
-    this.router.navigate(['/search'], { queryParams: { query: term.trim() } });
+    this.router.navigate(['/products/search'], { queryParams: { query: term.trim() } });
   }
 }

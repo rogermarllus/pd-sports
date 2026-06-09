@@ -1,1 +1,45 @@
-<p>search-result works!</p>
+<section class="lista-produtos container search-section">
+  <header class="cabecalho-lista-produtos">
+    @if (isLoading) {
+      <h2 class="title-modality-section">Buscando por "{{ searchTerm }}"...</h2>
+    }
+
+    @else if (!searchTerm) {
+      <h2 class="title-modality-section">Nenhum termo informado.</h2>
+    }
+
+    @else if (hasError) {
+      <h2 class="title-modality-section">Erro ao buscar produtos.</h2>
+    }
+
+    @else {
+      <h2 class="title-modality-section">
+        Resultados para "{{ searchTerm }}" ({{ results.length }})
+      </h2>
+    }
+  </header>
+
+  @if (isLoading) {
+    <p class="txt-estado">Carregando...</p>
+  }
+
+  @else if (hasError) {
+    <p class="txt-estado">Erro ao buscar produtos. Tente novamente.</p>
+  }
+
+  @else if (!searchTerm) {
+    <p class="txt-estado">Digite um termo na barra de busca para ver os resultados.</p>
+  }
+
+  @else if (results.length === 0) {
+    <p class="txt-estado">Nenhum produto encontrado para "{{ searchTerm }}".</p>
+  }
+
+  @else {
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+      @for (produto of results; track produto.id) {
+        <app-product-card [produto]="produto" />
+      }
+    </div>
+  }
+</section>
