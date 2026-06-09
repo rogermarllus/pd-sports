@@ -20,4 +20,9 @@ describe('CurrencyBrlPipe', () => {
   it('should format zero correctly', () => {
     expect(pipe.transform(0)).toContain('R$');
   });
+
+  it('should format a string value as BRL currency', () => {
+    expect(pipe.transform('479,90')).toContain('R$');
+    expect(pipe.transform('479,90')).toContain('479');
+  });
 });

@@ -4,9 +4,10 @@ import { CommonModule } from '@angular/common';
 import { ProductsRoutingModule } from './products.routing.module';
 import { ProductDetailsComponent } from './product-details/product-details.component';
 import { SearchResultComponent } from './search-result/search-result.component';
+import { SharedModule } from "../../shared/shared.module";
 
 @NgModule({
   declarations: [ProductDetailsComponent, SearchResultComponent],
-  imports: [CommonModule, ProductsRoutingModule],
+  imports: [CommonModule, ProductsRoutingModule, SharedModule],
 })
 export class ProductsModule {}

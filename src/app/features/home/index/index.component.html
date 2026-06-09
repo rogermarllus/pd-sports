@@ -147,7 +147,7 @@
                                     class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
                                     <header>
                                         <h3>{{ offer.title }}</h3>
-                                        <p class="fw-bold value-card-best-offers">{{ offer.price }}</p>
+                                        <p class="fw-bold value-card-best-offers">{{ offer.price | currencyBrl }}</p>
                                     </header>
                                     <a [routerLink]="['/products', offer.id]"
                                         class="btn btn-card-best-offers rounded-pill px-4">
@@ -186,7 +186,7 @@
                                         class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
                                         <header>
                                             <h3>{{ pair.first.title }}</h3>
-                                            <p class="fw-bold value-card-best-offers">{{ pair.first.price }}</p>
+                                            <p class="fw-bold value-card-best-offers">{{ pair.first.price | currencyBrl }}</p>
                                         </header>
                                         <a [routerLink]="['/products', pair.first.id]"
                                             class="btn btn-card-best-offers rounded-pill px-4">
@@ -205,7 +205,7 @@
                                         class="txt-card-best-offers position-absolute top-0 start-0 w-100 h-100 d-flex flex-column justify-content-between align-items-center text-center">
                                         <header>
                                             <h3>{{ pair.second.title }}</h3>
-                                            <p class="fw-bold value-card-best-offers">{{ pair.second.price }}</p>
+                                            <p class="fw-bold value-card-best-offers">{{ pair.second.price | currencyBrl }}</p>
                                         </header>
                                         <a [routerLink]="['/products', pair.second.id]"
                                             class="btn btn-card-best-offers rounded-pill px-4">

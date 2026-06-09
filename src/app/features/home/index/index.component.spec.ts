@@ -5,6 +5,7 @@ import { of } from 'rxjs';
 
 import { IndexComponent } from './index.component';
 import { ProductService } from '../../../core/services/product.service';
+import { CurrencyBrlPipe } from '../../../shared/pipes/currency-brl-pipe';
 
 @Component({
   selector: 'app-product-card',
@@ -39,7 +40,7 @@ describe('IndexComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [IndexComponent, MockProductCardComponent],
+      declarations: [IndexComponent, MockProductCardComponent, CurrencyBrlPipe],
       imports: [RouterModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA],
       providers: [
