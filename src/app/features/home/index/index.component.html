@@ -239,7 +239,7 @@
                 class="d-flex gap-3 overflow-hidden scroll-smooth list-unstyled m-0 p-0">
                 @for (modality of modalities; track modality.route) {
                 <li class="card-item-modalitys">
-                    <a routerLink="/modality" [queryParams]="{ modality: modality.route }" class="card-link-modalyts">
+                    <a [routerLink]="['/home/modalidades', modality.route]" class="card-link-modalyts">
                         <article class="card-custom">
                             <img [src]="'img/' + modality.image" [alt]="modality.label" class="img-card-modalitys" />
                             <h3 class="title-card-modalitys">{{ modality.label }}</h3>

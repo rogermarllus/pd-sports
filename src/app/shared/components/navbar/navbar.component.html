@@ -5,16 +5,9 @@
       <a routerLink="/"><img src="/img/svg/logo.svg" alt="logotipo" /></a>
     </div>
 
-    <form
-      class="d-flex flex-grow-1 mx-3 container-search"
-      (submit)="search(searchInput.value); $event.preventDefault()"
-    >
-      <input
-        #searchInput
-        class="form-control search-input"
-        type="search"
-        placeholder="Busque por um produto"
-      />
+    <form class="d-flex flex-grow-1 mx-3 container-search"
+      (submit)="search(searchInput.value); $event.preventDefault()">
+      <input #searchInput class="form-control search-input" type="search" placeholder="Busque por um produto" />
       <button class="btn text-white ms-2" type="submit">
         <i data-lucide="search" class="icon-lg"></i>
       </button>
@@ -29,27 +22,22 @@
       </a>
 
       @if (user) {
-        <a
-          [routerLink]="user.isAdmin ? '/admin' : '/user'"
-          class="text-white p-2 rounded d-flex align-items-center gap-2"
-        >
-          <i data-lucide="user" class="icon-lg"></i>
-          <span>{{ firstName }}</span>
-        </a>
+      <a [routerLink]="user.isAdmin ? '/admin' : '/user'"
+        class="text-white p-2 rounded d-flex align-items-center gap-2">
+        <i data-lucide="user" class="icon-lg"></i>
+        <span>{{ firstName }}</span>
+      </a>
       } @else {
-        <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
-          <i data-lucide="user" class="icon-lg"></i>
-        </a>
+      <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
+        <i data-lucide="user" class="icon-lg"></i>
+      </a>
       }
     </div>
   </div>
 </nav>
 
 <!-- ===================== MOBILE NAV ===================== -->
-<nav
-  class="navbar navigation-bar d-flex d-md-none nav-mobile-top"
-  aria-label="Navegação principal mobile"
->
+<nav class="navbar navigation-bar d-flex d-md-none nav-mobile-top" aria-label="Navegação principal mobile">
   <div class="container-fluid d-flex align-items-center justify-content-between">
     <div class="logo">
       <a routerLink="/"><img src="/img/svg/logo.svg" alt="logotipo" /></a>
@@ -63,17 +51,15 @@
       </a>
 
       @if (user) {
-        <a
-          [routerLink]="user.isAdmin ? '/admin' : '/user'"
-          class="text-white p-2 rounded d-flex align-items-center gap-2"
-        >
-          <i data-lucide="user" class="icon-lg"></i>
-          <span class="user-name-mobile">{{ firstName }}</span>
-        </a>
+      <a [routerLink]="user.isAdmin ? '/admin' : '/user'"
+        class="text-white p-2 rounded d-flex align-items-center gap-2">
+        <i data-lucide="user" class="icon-lg"></i>
+        <span class="user-name-mobile">{{ firstName }}</span>
+      </a>
       } @else {
-        <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
-          <i data-lucide="user" class="icon-lg"></i>
-        </a>
+      <a routerLink="/auth/login" class="text-white p-2 rounded" aria-label="Login">
+        <i data-lucide="user" class="icon-lg"></i>
+      </a>
       }
     </div>
   </div>
@@ -81,16 +67,8 @@
 
 <!-- ===================== BUSCA MOBILE ===================== -->
 <div class="d-flex d-md-none nav-mobile-search">
-  <form
-    class="container-search-mobile"
-    (submit)="search(searchMobile.value); $event.preventDefault()"
-  >
-    <input
-      #searchMobile
-      class="search-input-mobile"
-      type="search"
-      placeholder="Busque por um produto"
-    />
+  <form class="container-search-mobile" (submit)="search(searchMobile.value); $event.preventDefault()">
+    <input #searchMobile class="search-input-mobile" type="search" placeholder="Busque por um produto" />
     <button class="btn-search-mobile" type="submit" aria-label="Buscar">
       <span class="divider-search-mobile"></span>
       <i data-lucide="search" class="icon-lg"></i>
@@ -102,136 +80,73 @@
 <nav class="menu-bar py-2 menu-bar-second" aria-label="Categorias de produtos">
   <div class="container modality-menu">
     <div class="dropdown container-dropdown-options">
-      <button
-        class="btn button-dropdown-nav dropdown-toggle"
-        type="button"
-        data-bs-toggle="dropdown"
-        data-bs-boundary="viewport"
-        data-bs-popper-config='{"strategy":"fixed"}'
-      >
+      <button class="btn button-dropdown-nav dropdown-toggle" type="button" data-bs-toggle="dropdown"
+        data-bs-boundary="viewport" data-bs-popper-config='{"strategy":"fixed"}'>
         <i class="bi bi-grid"></i> Todas as modalidades
       </button>
       <ul class="dropdown-menu dropdown-modality">
         <li>
-          <a
-            class="dropdown-item"
-            routerLink="/modality"
-            [queryParams]="{ modality: 'Artes Marciais' }"
-            >Artes marciais</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Artes Marciais']">Artes marciais</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Basquete' }"
-            >Basquete</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Basquete']">Basquete</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Caminhada' }"
-            >Caminhada</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Caminhada']">Caminhada</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Ciclismo' }"
-            >Ciclismo</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Ciclismo']">Ciclismo</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Corrida' }"
-            >Corrida</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Corrida']">Corrida</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Crossfit' }"
-            >Crossfit</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Crossfit']">Crossfit</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Futebol' }"
-            >Futebol</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Futebol']">Futebol</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Futsal' }"
-            >Futsal</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Futsal']">Futsal</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Musculação' }"
-            >Musculação</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Musculação']">Musculação</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Natação' }"
-            >Natação</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Natação']">Natação</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Skate' }"
-            >Skate</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Skate']">Skate</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Surf' }"
-            >Surf</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Surf']">Surf</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Tênis' }"
-            >Tênis</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Tênis']">Tênis</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Vôlei' }"
-            >Vôlei</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Vôlei']">Vôlei</a>
         </li>
         <li>
-          <a class="dropdown-item" routerLink="/modality" [queryParams]="{ modality: 'Yoga' }"
-            >Yoga</a
-          >
+          <a class="dropdown-item" [routerLink]="['/home/modalidades', 'Yoga']">Yoga</a>
         </li>
       </ul>
     </div>
     <ul class="list-unstyled mb-0 list-second-options">
       <li>
-        <a
-          routerLink="/modality"
-          [queryParams]="{ modality: 'Futebol' }"
-          class="menu-link link-underline"
-          >Futebol</a
-        >
+        <a [routerLink]="['/home/modalidades', 'Futebol']" class="menu-link link-underline">Futebol</a>
       </li>
       <li>
-        <a
-          routerLink="/modality"
-          [queryParams]="{ modality: 'Basquete' }"
-          class="menu-link link-underline"
-          >Basquete</a
-        >
+        <a [routerLink]="['/home/modalidades', 'Basquete']" class="menu-link link-underline">Basquete</a>
       </li>
       <li>
-        <a
-          routerLink="/modality"
-          [queryParams]="{ modality: 'Corrida' }"
-          class="menu-link link-underline"
-          >Corrida</a
-        >
+        <a [routerLink]="['/home/modalidades', 'Corrida']" class="menu-link link-underline">Corrida</a>
       </li>
       <li>
-        <a
-          routerLink="/modality"
-          [queryParams]="{ modality: 'Musculação' }"
-          class="menu-link link-underline"
-          >Musculação</a
-        >
+        <a [routerLink]="['/home/modalidades', 'Musculação']" class="menu-link link-underline">Musculação</a>
       </li>
       <li>
-        <a
-          routerLink="/modality"
-          [queryParams]="{ modality: 'Natação' }"
-          class="menu-link link-underline"
-          >Natação</a
-        >
+        <a [routerLink]="['/home/modalidades', 'Natação']" class="menu-link link-underline">Natação</a>
       </li>
     </ul>
   </div>
