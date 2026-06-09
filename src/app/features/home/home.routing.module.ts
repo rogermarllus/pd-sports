@@ -5,7 +5,7 @@ import { ModalitiesComponent } from './modalities/modalities.component';
 
 const routes: Routes = [
   { path: '', component: IndexComponent },
-  { path: 'modalidades', component: ModalitiesComponent },
+  { path: 'modalidades/:modality', component: ModalitiesComponent },
 ];
 
 @NgModule({

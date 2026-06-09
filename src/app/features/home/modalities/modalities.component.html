@@ -1,1 +1,91 @@
-<p>modalities works!</p>
+<!-- ===================== CABEÇALHO + FILTROS ===================== -->
+<section class="lista-produtos container modalities-section">
+    <header class="cabecalho-lista-produtos d-flex flex-column flex-md-row justify-content-between
+                   align-items-stretch align-items-md-center gap-3">
+
+        <h2 class="title-modality-section">
+            {{ currentModality || 'Modalidade' }} | Produtos
+        </h2>
+
+        <div class="d-flex flex-wrap justify-content-between gap-2">
+
+            <!-- Filtro de preço -->
+            <div class="dropdown">
+                <button class="botao dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span>{{ priceLabel }}</span>
+                    <i data-lucide="arrow-down-wide-narrow" class="icon-filter"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    @for (option of priceRangeOptions; track option.value) {
+                    <li>
+                        <a class="dropdown-item" (click)="setRange(option.value)">
+                            {{ option.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+
+            <!-- Filtro de ordenação -->
+            <div class="dropdown">
+                <button class="botao dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <span>{{ sortLabel }}</span>
+                    <i data-lucide="arrow-up-down" class="icon-filter"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    @for (option of sortOptions; track option.label) {
+                    <li>
+                        <a class="dropdown-item" (click)="setSort(option.value)">
+                            {{ option.label }}
+                        </a>
+                    </li>
+                    }
+                </ul>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Estado: carregando -->
+    @if (isLoading) {
+    <p class="txt-estado">Carregando...</p>
+    }
+
+    <!-- Estado: erro -->
+    @else if (hasError) {
+    <p class="txt-estado">Erro ao carregar produtos. Tente novamente.</p>
+    }
+
+    <!-- Estado: sem modalidade informada -->
+    @else if (!currentModality) {
+    <p class="txt-estado">Modalidade não informada.</p>
+    }
+
+    <!-- Estado: sem resultados com filtro -->
+    @else if (filteredProducts.length === 0) {
+    <p class="txt-estado">Nenhum produto encontrado nesta faixa de preço.</p>
+    }
+
+    <!-- Produtos filtrados -->
+    @else {
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        @for (produto of filteredProducts; track produto.id) {
+        <app-product-card [produto]="produto" />
+        }
+    </div>
+    }
+</section>
+
+<!-- ===================== POPULARES ===================== -->
+@if (!isLoading && !hasError && popularProducts.length > 0) {
+<section class="produtos-populares container modalities-section">
+    <h2 class="title-modality-section">
+        {{ currentModality }} | Popular
+    </h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-4">
+        @for (produto of popularProducts; track produto.id) {
+        <app-product-card [produto]="produto" />
+        }
+    </div>
+</section>
+}
