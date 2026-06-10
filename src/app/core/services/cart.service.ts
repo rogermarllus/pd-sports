@@ -74,4 +74,10 @@ export class CartService {
   getTotal(): number {
     return this.items.getValue().reduce((acc, item) => acc + item.price * item.quantity, 0);
   }
+
+  // Limpa completamente o carrinho tanto no estado quanto no localStorage
+  clearCart(): void {
+    this.items.next([]);
+    this.saveOnStorage([]);
+  }
 }
