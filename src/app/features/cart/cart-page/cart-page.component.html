@@ -1,1 +1,468 @@
-<p>cart-page works!</p>
+<section class="cart-section container">
+  <div class="section-products-cart">
+    <h2 class="title-cart">Meu Carrinho</h2>
+
+    <div class="container-products-cart">
+      @if (items.length === 0) {
+        <p class="txt-empty-cart">Seu carrinho está vazio.</p>
+      }
+
+      @for (item of items; track item.id) {
+        <article class="product-cart">
+          <div class="container-img-info-product">
+            <img
+              class="img-product-cart"
+              [src]="getImagePath(item)"
+              [alt]="item.name"
+              (error)="$any($event.target).src = '/img/products/product-placeholder.avif'"
+            />
+            <div class="container-info-about-product">
+              <p class="name-product-cart">{{ item.name }}</p>
+              <p class="price-product-cart">{{ formatBRL(item.price) }}</p>
+              <p class="quantity-product-cart">
+                <span class="txt-quantity">Qtd: {{ item.quantity }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="increment-decrement-product">
+            <button
+              type="button"
+              (click)="decrement(item.id)"
+              style="
+                background: none;
+                border: none;
+                padding: 0;
+                color: inherit;
+                display: flex;
+                align-items: center;
+              "
+              aria-label="Diminuir quantidade"
+            >
+              <i data-lucide="circle-minus" class="icon-circle-minus"></i>
+            </button>
+
+            <span class="quantity-product">{{ item.quantity }}</span>
+
+            <button
+              type="button"
+              (click)="increment(item.id)"
+              style="
+                background: none;
+                border: none;
+                padding: 0;
+                color: inherit;
+                display: flex;
+                align-items: center;
+              "
+              aria-label="Aumentar quantidade"
+            >
+              <i data-lucide="circle-plus" class="icon-circle-plus"></i>
+            </button>
+          </div>
+
+          <button
+            type="button"
+            (click)="remove(item.id)"
+            style="
+              background: none;
+              border: none;
+              padding: 0;
+              color: inherit;
+              display: flex;
+              align-items: center;
+            "
+            aria-label="Remover produto"
+          >
+            <i data-lucide="trash-2" class="icon-trash-2"></i>
+          </button>
+        </article>
+      }
+    </div>
+  </div>
+
+  <div class="section-buy-cart">
+    <h2 class="title-cart">Resumo da compra</h2>
+
+    <div class="container-buy-cart">
+      <div class="header-buy-cart">
+        <div class="container-title-quantity-product">
+          <h3 class="title-quantity-product">Produtos</h3>
+          <p class="quantity-product-buy-cart">({{ totalQuantity }})</p>
+        </div>
+        <h2 class="title-price-total-buy-cart">{{ formatBRL(subtotal) }}</h2>
+      </div>
+
+      <div class="main-delivery-product">
+        <h3 class="title-delivery-product">Entrega</h3>
+
+        <div class="container-calc-freight-product">
+          <input
+            type="text"
+            placeholder="Insira o CEP"
+            class="input-calc-freight-product"
+            [value]="cep"
+            (input)="onCepInput($event)"
+            maxlength="9"
+          />
+          <button
+            class="btn-calc-freight-product"
+            (click)="calcularFrete()"
+            [disabled]="isCalculatingFreight"
+          >
+            {{ isCalculatingFreight ? 'Calculando...' : 'Calcular' }}
+          </button>
+        </div>
+
+        @if (freightError) {
+          <p class="txt-freight-error">{{ freightError }}</p>
+        }
+
+        <div class="container-service-orders" [class.has-options]="shippingOptions.length > 0">
+          @for (option of shippingOptions; track option.name) {
+            <div
+              class="service-order"
+              [class.selected]="selectedShipping?.name === option.name"
+              (click)="selectShipping(option)"
+            >
+              <div class="service-order-content">
+                <div class="left">
+                  <p class="title">{{ option.name }}</p>
+                  @if (option.delivery_time) {
+                    <p class="delivery">{{ option.delivery_time }} dias úteis</p>
+                  }
+                </div>
+                <div class="right">
+                  <p class="price">{{ formatBRL(option.price) }}</p>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="footer-delivery-product">
+        <h2 class="footer-title-total-value">Total:</h2>
+        <h2 class="footer-total-value">{{ formatBRL(total) }}</h2>
+      </div>
+
+      <button class="btn-finish-buy" (click)="openModal()">Finalizar compra</button>
+    </div>
+  </div>
+</section>
+
+@if (modalOpen) {
+  <div class="modal-payment-overlay" (click)="closeModal()">
+    <div class="modal-payment-box" (click)="$event.stopPropagation()">
+      @if (currentStep === 1) {
+        <div class="modal-step">
+          <div class="modal-pay-header">
+            <h2 class="modal-pay-title">Confirmar Pedido</h2>
+            <button class="modal-pay-close" (click)="closeModal()" aria-label="Fechar modal">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <div class="modal-order-items">
+            @for (item of items; track item.id) {
+              <div class="modal-order-item">
+                <p class="modal-order-item-name">{{ item.name }}</p>
+                <p class="modal-order-item-qty">x{{ item.quantity }}</p>
+                <p class="modal-order-item-price">{{ formatBRL(item.price * item.quantity) }}</p>
+              </div>
+            }
+          </div>
+
+          <hr class="modal-divider" />
+
+          <div>
+            <div class="modal-summary-row">
+              <p class="modal-summary-label">Subtotal</p>
+              <p class="modal-summary-value">{{ formatBRL(subtotal) }}</p>
+            </div>
+            <div class="modal-summary-row">
+              <p class="modal-summary-label">Frete</p>
+              <p class="modal-summary-value">
+                {{ selectedShipping ? formatBRL(shippingPrice) : 'Não calculado' }}
+              </p>
+            </div>
+            <div class="modal-summary-row total">
+              <p class="modal-summary-label">Total</p>
+              <p class="modal-summary-value">{{ formatBRL(total) }}</p>
+            </div>
+          </div>
+
+          <p class="modal-pay-method-title">Forma de Pagamento</p>
+
+          <div class="modal-pay-methods" role="group" aria-label="Métodos de pagamento">
+            <button
+              class="modal-pay-method-btn"
+              [class.selected]="chosenMethod === 'pix'"
+              (click)="selectMethod('pix')"
+              aria-pressed="{{ chosenMethod === 'pix' }}"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path
+                  d="M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM16 16h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z"
+                />
+              </svg>
+              <span class="modal-pay-method-label">PIX</span>
+            </button>
+
+            <button
+              class="modal-pay-method-btn"
+              [class.selected]="chosenMethod === 'credit'"
+              (click)="selectMethod('credit')"
+              aria-pressed="{{ chosenMethod === 'credit' }}"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <rect x="2" y="5" width="20" height="14" rx="2.5" />
+                <line x1="2" y1="10" x2="22" y2="10" />
+                <line x1="6" y1="15" x2="10" y2="15" />
+              </svg>
+              <span class="modal-pay-method-label">Cartão</span>
+            </button>
+
+            <button
+              class="modal-pay-method-btn"
+              [class.selected]="chosenMethod === 'boleto'"
+              (click)="selectMethod('boleto')"
+              aria-pressed="{{ chosenMethod === 'boleto' }}"
+            >
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <rect x="3" y="4" width="2" height="16" />
+                <rect x="7" y="4" width="1" height="16" />
+                <rect x="10" y="4" width="3" height="16" />
+                <rect x="15" y="4" width="1" height="16" />
+                <rect x="18" y="4" width="3" height="16" />
+              </svg>
+              <span class="modal-pay-method-label">Boleto</span>
+            </button>
+          </div>
+
+          <button class="btn-modal-pay-confirm" (click)="goToStep(2)">Continuar</button>
+        </div>
+      }
+
+      @if (currentStep === 2) {
+        <div class="modal-step">
+          <div class="modal-pay-header">
+            <h2 class="modal-pay-title">
+              Pagamento via
+              {{
+                chosenMethod === 'pix'
+                  ? 'PIX'
+                  : chosenMethod === 'credit'
+                    ? 'Cartão de Crédito'
+                    : 'Boleto Bancário'
+              }}
+            </h2>
+            <button class="modal-pay-close" (click)="closeModal()" aria-label="Fechar modal">
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+              >
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+              </svg>
+            </button>
+          </div>
+
+          <button
+            class="modal-pay-back"
+            (click)="goToStep(1)"
+            aria-label="Voltar ao passo anterior"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="15 18 9 12 15 6" />
+            </svg>
+            Voltar
+          </button>
+
+          @if (chosenMethod === 'pix') {
+            <div class="modal-pix-qr">
+              <div class="modal-pix-qr-img">
+                <svg
+                  viewBox="0 0 100 100"
+                  xmlns="http://www.w3.org/2000/svg"
+                  shape-rendering="crispEdges"
+                >
+                  <rect width="100" height="100" fill="white" />
+                  <g fill="#1D0F28">
+                    <rect x="5" y="5" width="30" height="30" />
+                    <rect x="10" y="10" width="20" height="20" fill="white" />
+                    <rect x="15" y="15" width="10" height="10" />
+
+                    <rect x="65" y="5" width="30" height="30" />
+                    <rect x="70" y="10" width="20" height="20" fill="white" />
+                    <rect x="75" y="15" width="10" height="10" />
+
+                    <rect x="5" y="65" width="30" height="30" />
+                    <rect x="10" y="70" width="20" height="20" fill="white" />
+                    <rect x="15" y="75" width="10" height="10" />
+
+                    <rect x="45" y="10" width="10" height="10" />
+                    <rect x="40" y="25" width="15" height="10" />
+                    <rect x="45" y="45" width="10" height="10" />
+                    <rect x="10" y="45" width="15" height="10" />
+                    <rect x="65" y="45" width="25" height="10" />
+                    <rect x="45" y="65" width="15" height="15" />
+                    <rect x="70" y="65" width="20" height="10" />
+                    <rect x="65" y="80" width="10" height="15" />
+                    <rect x="80" y="80" width="15" height="15" />
+                  </g>
+                </svg>
+              </div>
+              <p class="modal-pix-instruction">
+                Escaneie o QR Code ou copie a chave PIX abaixo para concluir o pagamento.
+              </p>
+              <div class="modal-pix-key-box">
+                <p class="modal-pix-key">pdsports&#64;pagamentos.com.br</p>
+                <button class="modal-copy-btn" type="button" (click)="copyPix()">
+                  {{ pixCopied ? 'Copiado!' : 'Copiar' }}
+                </button>
+              </div>
+            </div>
+          }
+
+          @if (chosenMethod === 'credit') {
+            <div class="modal-card-form">
+              <input
+                class="modal-card-input"
+                type="text"
+                inputmode="numeric"
+                placeholder="Número do Cartão"
+                maxlength="19"
+                autocomplete="cc-number"
+                [value]="cardNum"
+                (input)="onCardNumInput($event)"
+              />
+              <input
+                class="modal-card-input"
+                type="text"
+                placeholder="Nome no Cartão"
+                autocomplete="cc-name"
+                [(ngModel)]="cardHolder"
+              />
+              <div class="modal-card-row">
+                <input
+                  class="modal-card-input"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="MM/AA"
+                  maxlength="5"
+                  autocomplete="cc-exp"
+                  [value]="cardExp"
+                  (input)="onCardExpInput($event)"
+                />
+                <input
+                  class="modal-card-input"
+                  type="text"
+                  inputmode="numeric"
+                  placeholder="CVV"
+                  maxlength="3"
+                  autocomplete="cc-csc"
+                  [(ngModel)]="cardCvv"
+                />
+              </div>
+            </div>
+          }
+
+          @if (chosenMethod === 'boleto') {
+            <div class="modal-boleto-wrap">
+              <div class="modal-boleto-barcode">
+                <div style="width: 6px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 4px; background: white; flex-shrink: 0"></div>
+                <div style="width: 2px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 6px; background: white; flex-shrink: 0"></div>
+                <div style="width: 4px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 2px; background: white; flex-shrink: 0"></div>
+                <div style="width: 8px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 4px; background: white; flex-shrink: 0"></div>
+                <div style="width: 2px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 6px; background: white; flex-shrink: 0"></div>
+                <div style="width: 4px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 6px; background: white; flex-shrink: 0"></div>
+                <div style="width: 8px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 2px; background: white; flex-shrink: 0"></div>
+                <div style="width: 4px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 4px; background: white; flex-shrink: 0"></div>
+                <div style="width: 6px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 2px; background: white; flex-shrink: 0"></div>
+                <div style="width: 8px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 4px; background: white; flex-shrink: 0"></div>
+                <div style="width: 4px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 6px; background: white; flex-shrink: 0"></div>
+                <div style="width: 2px; background: #1d0f28; flex-shrink: 0"></div>
+                <div style="width: 4px; background: white; flex-shrink: 0"></div>
+                <div style="width: 8px; background: #1d0f28; flex-shrink: 0"></div>
+              </div>
+              <p class="modal-boleto-info">
+                Vencimento em 3 dias úteis. A compensação pode levar até 3 dias após o pagamento.
+              </p>
+              <div class="modal-pix-key-box">
+                <p class="modal-pix-key">34191.09008 00004.585609 71234.560007 3 10110000095700</p>
+                <button class="modal-copy-btn" type="button" (click)="copyBoleto()">
+                  {{ boletoCopied ? 'Copiado!' : 'Copiar' }}
+                </button>
+              </div>
+            </div>
+          }
+
+          <button class="btn-confirm-payment" (click)="confirmPayment()">
+            Confirmar Pagamento
+          </button>
+        </div>
+      }
+
+      @if (currentStep === 3) {
+        <div class="modal-step">
+          <div class="modal-success-wrap">
+            <svg
+              class="modal-success-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+              <polyline points="22 4 12 14.01 9 11.01" />
+            </svg>
+            <h2 class="modal-success-title">Pedido Confirmado!</h2>
+            <p class="modal-success-message">
+              Seu pedido foi recebido com sucesso e já está sendo processado.
+            </p>
+            <button class="btn-modal-pay-confirm" (click)="finishShopping()">
+              Voltar às compras
+            </button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
