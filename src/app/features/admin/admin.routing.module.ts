@@ -13,7 +13,7 @@ const routes: Routes = [
     canActivate: [adminGuard],
     children: [
       { path: '', component: DashboardComponent },
-      { path: 'produto/listar', component: ProductListComponent },
+      { path: 'produtos', component: ProductListComponent },
       { path: 'produto/criar', component: ProductCreateComponent },
       { path: 'produto/:id/editar', component: ProductEditComponent },
     ],
