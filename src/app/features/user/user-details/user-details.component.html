@@ -1,0 +1,156 @@
+<section class="container conta-wrapper">
+  <div class="conta-header">
+    <h1>Minha conta</h1>
+    <button id="btn-sair" class="btn-sair" type="button" (click)="logout()">
+      Sair <i class="bi bi-box-arrow-right"></i>
+    </button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="saveUser()">
+    <div class="conta-card">
+      <div class="conta-dados">
+        <section class="secao-dados">
+          <h2>Dados pessoais</h2>
+
+          <div class="campos-grid">
+            <div class="campo-grupo">
+              <label for="user-fullname">Nome completo</label>
+              <input type="text" id="user-fullname" class="campo-input" formControlName="name" />
+            </div>
+
+            <div class="campo-grupo">
+              <label for="user-phone">Telefone</label>
+              <input type="text" id="user-phone" class="campo-input" formControlName="phone" />
+            </div>
+
+            <div class="campo-grupo">
+              <label for="user-email">E-mail</label>
+              <input type="email" id="user-email" class="campo-input" formControlName="email" />
+            </div>
+
+            <div class="campo-grupo">
+              <label for="user-birth">Data de nascimento</label>
+              <input
+                type="date"
+                id="user-birth"
+                class="campo-input"
+                formControlName="birthDate"
+                [max]="maxBirthDate"
+              />
+            </div>
+          </div>
+        </section>
+
+        <section class="secao-preferencias">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h2>Preferências</h2>
+
+            @if (!isEditing) {
+              <button
+                type="button"
+                id="btn-editar"
+                class="btn btn-link btn-edit-save p-0 text-decoration-none"
+                (click)="enableEdit()"
+              >
+                Editar Dados
+              </button>
+            } @else {
+              <button
+                type="submit"
+                id="btn-salvar"
+                class="btn btn-link btn-edit-save pedido-link p-0 text-decoration-none"
+                [disabled]="form.invalid || isSaving"
+              >
+                {{ isSaving ? 'Salvando...' : 'Salvar Dados' }}
+              </button>
+            }
+          </div>
+
+          <div class="preferencias-lista">
+            <label class="preferencia-item">
+              <input type="checkbox" id="pref-email" formControlName="prefEmail" />
+              <span>Quero receber ofertas e novidades das lojas da PD Sports por e-mail.</span>
+            </label>
+
+            <label class="preferencia-item">
+              <input
+                type="checkbox"
+                id="pref-whatsapp-ofertas"
+                formControlName="prefWhatsappOfertas"
+              />
+              <span>Quero receber ofertas e novidades por Whatsapp.</span>
+            </label>
+
+            <label class="preferencia-item">
+              <input
+                type="checkbox"
+                id="pref-whatsapp-pedidos"
+                formControlName="prefWhatsappPedidos"
+              />
+              <span>Quero receber notificações sobre os meus pedidos por WhatsApp.</span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <div class="conta-divisor"></div>
+
+      <div class="conta-pedidos">
+        <h2>Pedidos</h2>
+
+        <div class="pedidos-lista">
+          @for (order of mockOrders; track order.numero) {
+            <article class="pedido-card">
+              <p><span class="pedido-label">Pedido:</span> {{ order.numero }}</p>
+              <p><span class="pedido-label">Data do pedido:</span> {{ order.data }}</p>
+              <p><span class="pedido-label">Quantidade:</span> {{ order.quantidade }}</p>
+              <p><span class="pedido-label">Valor:</span> {{ order.valor }}</p>
+              <a (click)="openOrderModal()" class="pedido-link">Ver Detalhes</a>
+            </article>
+          }
+        </div>
+      </div>
+    </div>
+  </form>
+</section>
+
+<section class="container secao-modalidades">
+  <h2>Explore Nossas Modalidades</h2>
+  <div class="modalidades-grid">
+    @for (column of modalityColumns; track $index) {
+      <ul>
+        @for (modality of column; track modality) {
+          <li>
+            <a [routerLink]="['/home/modalidades', modality]">{{ modality }}</a>
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</section>
+
+@if (modalOpen) {
+  <div
+    class="modal fade show d-block"
+    tabindex="-1"
+    style="background: rgba(0, 0, 0, 0.6)"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-pedido-content">
+        <div class="modal-pedido-header">
+          <i class="bi bi-info-circle modal-pedido-icon"></i>
+          <h5 class="modal-pedido-titulo">{{ modalTitle }}</h5>
+        </div>
+        <div class="modal-pedido-body">
+          <p>{{ modalMessage }}</p>
+          <p class="modal-pedido-sub">{{ modalSubMessage }}</p>
+        </div>
+        <div class="modal-pedido-footer">
+          <button type="button" class="btn-modal-fechar" (click)="closeModal()">Fechar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+}
