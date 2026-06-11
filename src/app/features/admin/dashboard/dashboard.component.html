@@ -1,1 +1,106 @@
-<p>dashboard works!</p>
+<nav class="admin-navbar">
+  <div class="container">
+    <div class="admin-navbar-inner">
+      <a [routerLink]="['/']" class="admin-logo">
+        <img src="img/svg/logo.svg" alt="PD Sports" />
+      </a>
+      <div class="admin-nav-actions">
+        <a [routerLink]="['/admin/produtos']" class="btn-admin-nav">
+          Produtos <i class="bi bi-chevron-right"></i>
+        </a>
+        <button id="btn-sair" class="btn-admin-nav" type="button" (click)="onLogout()">
+          Sair <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="container admin-container">
+  <section class="resumo-grid">
+    <article class="resumo-card">
+      <i class="bi bi-currency-dollar resumo-icone"></i>
+      <p class="resumo-label">Receita Total</p>
+      <p class="resumo-valor">{{ stats.totalRevenue | currencyBrl }}</p>
+    </article>
+
+    <article class="resumo-card">
+      <i class="bi bi-cart3 resumo-icone"></i>
+      <p class="resumo-label">Total de Pedidos</p>
+      <p class="resumo-valor">{{ stats.totalOrders }}</p>
+    </article>
+
+    <article class="resumo-card">
+      <i class="bi bi-person resumo-icone"></i>
+      <p class="resumo-label">Total Clientes</p>
+      <p class="resumo-valor">{{ stats.totalCustomers }}</p>
+    </article>
+  </section>
+
+  <section class="grafico-card">
+    <h2>Vendas por dia</h2>
+
+    <div class="barras-lista">
+      @for (venda of dailySales; track venda.date) {
+        <div class="barra-item">
+          <span class="barra-label">{{ venda.date }}</span>
+          <div class="barra-track">
+            <div class="barra-fill" [style.--pct]="venda.percentage + '%'"></div>
+          </div>
+          <span class="barra-valor">{{ venda.value | currencyBrl }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <div class="bottom-grid">
+    <section class="grafico-card">
+      <h2>Top categorias</h2>
+
+      <div class="categorias-lista">
+        @for (cat of topCategories; track cat.name) {
+          <div class="categoria-item">
+            <div class="categoria-header">
+              <span class="categoria-nome">{{ cat.name }}</span>
+              <span class="categoria-pct">{{ cat.percentage }}%</span>
+            </div>
+            <div class="barra-track">
+              <div class="barra-fill" [style.--pct]="cat.percentage + '%'"></div>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+
+    <section class="grafico-card">
+      <h2>Produtos mais vendidos</h2>
+
+      <table class="produtos-tabela">
+        <thead>
+          <tr>
+            <th>Produto</th>
+            <th>Vendidos</th>
+            <th>Receita</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (prod of topProducts; track prod.name) {
+            <tr>
+              <td>{{ prod.name }}</td>
+              <td>
+                <span class="badge-vendidos">{{ prod.soldQuantity }}</span>
+              </td>
+              <td>{{ prod.revenue | currencyBrl }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  </div>
+</div>
+
+<footer class="admin-footer">
+  <div class="container">
+    <p>© 2026 PD Sports. Todos os Direitos Reservados</p>
+  </div>
+</footer>
