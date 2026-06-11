@@ -1,7 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+import { adminGuard } from '../../core/guards/admin-guard';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { ProductListComponent } from './product-list/product-list.component';
+import { ProductCreateComponent } from './product-create/product-create.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
+
+const routes: Routes = [
+  {
+    path: '',
+    canActivate: [adminGuard],
+    children: [
+      { path: '', component: DashboardComponent },
+      { path: 'produto/listar', component: ProductListComponent },
+      { path: 'produto/criar', component: ProductCreateComponent },
+      { path: 'produto/:id/editar', component: ProductEditComponent },
+    ],
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
