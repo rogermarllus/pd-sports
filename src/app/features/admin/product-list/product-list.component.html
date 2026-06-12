@@ -1,1 +1,257 @@
-<p>product-list works!</p>
+<nav class="admin-navbar">
+  <div class="container">
+    <div class="admin-navbar-inner">
+      <a [routerLink]="['/']" class="admin-logo">
+        <img src="img/svg/logo.svg" alt="PD Sports" />
+      </a>
+      <div class="admin-nav-actions">
+        <a [routerLink]="['/admin']" class="btn-admin-nav">
+          <i class="bi bi-chevron-left"></i> Dashboard
+        </a>
+        <button id="btn-sair" class="btn-admin-nav" type="button" (click)="onLogout()">
+          Sair <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container lista-produtos-wrapper">
+  <section class="lista-produtos" aria-label="Lista de produtos em estoque">
+    <header
+      class="cabecalho-lista-produtos row d-flex flex-wrap flex-lg-nowrap align-items-center g-2 g-md-3"
+    >
+      <div class="col-12 col-lg-auto">
+        <h2 id="products-list-title">Estoque ({{ filteredProducts.length }} produtos)</h2>
+      </div>
+      <div class="col-12 col-md-6">
+        <input
+          type="search"
+          class="form-control w-100"
+          placeholder="Busque por um produto"
+          [value]="searchTerm"
+          (input)="onSearch($event)"
+        />
+      </div>
+      <div class="col-12 col-md-6 col-lg-auto">
+        <button class="botao w-100" type="button" (click)="openCreateModal()">Novo Produto</button>
+      </div>
+    </header>
+
+    @if (isLoading) {
+      <div class="list-feedback" role="status" aria-live="polite">
+        <div class="spinner"></div>
+        <p>Carregando produtos...</p>
+      </div>
+    } @else if (hasError) {
+      <div class="list-feedback" role="alert">
+        <p>Não foi possível carregar os produtos. Tente novamente.</p>
+        <button class="botao" type="button" (click)="loadProducts()">Tentar novamente</button>
+      </div>
+    } @else if (filteredProducts.length === 0) {
+      <div class="list-feedback">
+        <p>Nenhum produto encontrado.</p>
+      </div>
+    } @else {
+      <div id="products-list" role="list" aria-live="polite" aria-atomic="true">
+        @for (product of pagedProducts; track product.id) {
+          <article class="product-row" role="listitem">
+            <p class="product-name">{{ product.name }}</p>
+            <div class="product-row-actions">
+              <span
+                class="badge-status"
+                [class.badge-disponivel]="isAvailable(product)"
+                [class.badge-indisponivel]="!isAvailable(product)"
+              >
+                {{ isAvailable(product) ? 'Disponível (' + product.amount + ')' : 'Indisponível' }}
+              </span>
+              <div class="actions-group">
+                <button
+                  class="btn-action btn-edit"
+                  type="button"
+                  title="Editar produto"
+                  [attr.aria-label]="'Editar ' + product.name"
+                  (click)="handleEdit(product)"
+                >
+                  <i class="bi bi-pencil"></i>
+                </button>
+                <button
+                  class="btn-action btn-delete"
+                  type="button"
+                  title="Excluir produto"
+                  [attr.aria-label]="'Excluir ' + product.name"
+                  (click)="requestDelete(product)"
+                >
+                  <i class="bi bi-trash3"></i>
+                </button>
+              </div>
+            </div>
+          </article>
+        }
+      </div>
+
+      @if (totalPages > 1) {
+        <div class="lista-footer">
+          <nav class="pagination-wrapper" aria-label="Paginação de produtos">
+            <button
+              class="page-btn"
+              type="button"
+              aria-label="Página anterior"
+              [disabled]="currentPage === 1"
+              (click)="goToPage(currentPage - 1)"
+            >
+              <i class="bi bi-chevron-left"></i>
+            </button>
+
+            @for (page of pageRange; track $index) {
+              @if (isEllipsis(page)) {
+                <span class="page-ellipsis">…</span>
+              } @else {
+                <button
+                  class="page-btn"
+                  type="button"
+                  [class.active]="page === currentPage"
+                  [attr.aria-current]="page === currentPage ? 'page' : null"
+                  [attr.aria-label]="'Página ' + page"
+                  (click)="goToPage(page)"
+                >
+                  {{ page }}
+                </button>
+              }
+            }
+
+            <button
+              class="page-btn"
+              type="button"
+              aria-label="Próxima página"
+              [disabled]="currentPage === totalPages"
+              (click)="goToPage(currentPage + 1)"
+            >
+              <i class="bi bi-chevron-right"></i>
+            </button>
+          </nav>
+        </div>
+      }
+    }
+  </section>
+</main>
+
+<footer class="admin-footer">
+  <div class="container">
+    <p>© 2026 PD Sports. Todos os Direitos Reservados</p>
+  </div>
+</footer>
+
+<div
+  class="modal-overlay"
+  [class.active]="deleteModalOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-delete-title"
+>
+  <div class="modal-box">
+    <h3>Excluir produto?</h3>
+    <p>
+      Você tem certeza que deseja excluir
+      <strong class="modal-product-name">{{ pendingDeleteProduct?.name }}</strong
+      >? Essa ação não pode ser desfeita.
+    </p>
+    <div class="modal-actions">
+      <button
+        class="btn-modal-cancel"
+        type="button"
+        [disabled]="isDeleting"
+        (click)="cancelDelete()"
+      >
+        Cancelar
+      </button>
+      <button
+        class="btn-modal-confirm"
+        type="button"
+        [disabled]="isDeleting"
+        (click)="confirmDelete()"
+      >
+        {{ isDeleting ? 'Excluindo...' : 'Excluir' }}
+      </button>
+    </div>
+  </div>
+</div>
+
+<div
+  class="modal-form-overlay"
+  [class.active]="formModalOpen"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="modal-form-title"
+>
+  <div class="modal-form-box">
+    <h3 class="form-title" id="modal-form-title">
+      {{ editingProduct ? 'Editar produto' : 'Novo produto' }}
+    </h3>
+
+    <form [formGroup]="productForm" (ngSubmit)="saveProduct()">
+      <div class="modal-form-content">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="form-name">Nome</label>
+            <input id="form-name" type="text" formControlName="name" />
+          </div>
+
+          <div class="form-field">
+            <label for="form-modality">Modalidade</label>
+            <select id="form-modality" formControlName="modality">
+              <option value="" disabled>Selecione</option>
+              @for (modality of modalitiesList; track modality) {
+                <option [value]="modality">{{ modality }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-field form-field-descricao">
+            <label for="form-desc">Descrição</label>
+            <textarea id="form-desc" formControlName="description"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="form-price">Preço</label>
+            <input id="form-price" type="text" formControlName="price" placeholder="0.00" />
+          </div>
+
+          <div class="form-field">
+            <label for="form-amount">Quantidade</label>
+            <input id="form-amount" type="number" min="0" formControlName="amount" />
+          </div>
+
+          <div class="form-field">
+            <label for="form-color">Cor</label>
+            <input id="form-color" type="text" formControlName="color" />
+          </div>
+
+          <div class="form-field">
+            <label for="form-variation">Tipo de variação</label>
+            <select id="form-variation" formControlName="variationType">
+              <option value="" disabled>Selecione</option>
+              <option value="Nenhuma">Nenhuma</option>
+              <option value="Letra">Letra</option>
+              <option value="Numeração">Numeração</option>
+            </select>
+          </div>
+
+          <div class="form-field form-field-imagem">
+            <label>Imagem (não utilizada no MVP)</label>
+            <input type="file" disabled />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="botao-outline btn-cancel" (click)="closeFormModal()">
+          <i class="bi bi-arrow-left me-1"></i> Voltar
+        </button>
+        <button type="submit" class="botao btn-save" [disabled]="productForm.invalid || isSaving">
+          {{ isSaving ? 'Salvando...' : 'Salvar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
