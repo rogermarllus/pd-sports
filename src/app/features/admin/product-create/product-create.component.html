@@ -1,1 +1,97 @@
-<p>product-create works!</p>
+<nav class="admin-navbar">
+  <div class="container">
+    <div class="admin-navbar-inner">
+      <a [routerLink]="['/']" class="admin-logo">
+        <img src="img/svg/logo.svg" alt="PD Sports" />
+      </a>
+      <div class="admin-nav-actions">
+        <a [routerLink]="['/admin/produtos']" class="btn-admin-nav">
+          <i class="bi bi-chevron-left"></i> Estoque
+        </a>
+        <button id="btn-sair" class="btn-admin-nav" type="button" (click)="onLogout()">
+          Sair <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<main class="container page-form-wrapper">
+  <div class="page-form-back">
+    <a [routerLink]="['/admin/produtos']" class="botao-outline">
+      <i class="bi bi-arrow-left"></i> Voltar
+    </a>
+  </div>
+
+  <h2 class="page-form-title">Novo produto</h2>
+
+  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+    <div class="form-grid-page">
+      <div class="form-field">
+        <label for="create-name">Nome</label>
+        <input id="create-name" type="text" formControlName="name" />
+      </div>
+
+      <div class="form-field">
+        <label for="create-modality">Modalidade</label>
+        <select id="create-modality" formControlName="modality">
+          <option value="" disabled>Selecione</option>
+          @for (modality of modalitiesList; track modality) {
+            <option [value]="modality">{{ modality }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="form-field form-field-descricao">
+        <label for="create-desc">Descrição</label>
+        <textarea id="create-desc" formControlName="description"></textarea>
+      </div>
+
+      <div class="form-field">
+        <label for="create-price">Preço</label>
+        <input id="create-price" type="text" formControlName="price" placeholder="0.00" />
+      </div>
+
+      <div class="form-field">
+        <label for="create-amount">Quantidade</label>
+        <input id="create-amount" type="number" min="0" formControlName="amount" />
+      </div>
+
+      <div class="form-field">
+        <label for="create-color">Cor</label>
+        <input id="create-color" type="text" formControlName="color" />
+      </div>
+
+      <div class="form-field">
+        <label for="create-variation">Tipo de variação</label>
+        <select id="create-variation" formControlName="variationType">
+          <option value="" disabled>Selecione</option>
+          <option value="Nenhuma">Nenhuma</option>
+          <option value="Letra">Letra</option>
+          <option value="Numeração">Numeração</option>
+        </select>
+      </div>
+
+      <div class="form-field">
+        <label>Imagem (não utilizada no MVP)</label>
+        <input type="file" disabled />
+      </div>
+    </div>
+
+    <div class="page-form-actions">
+      <button
+        type="submit"
+        class="botao page-form-save"
+        [disabled]="productForm.invalid || isSaving"
+      >
+        {{ isSaving ? 'Cadastrando...' : 'Salvar Produto' }}
+      </button>
+    </div>
+  </form>
+</main>
+
+<footer class="admin-footer">
+  <div class="container">
+    <p>© 2026 PD Sports. Todos os Direitos Reservados</p>
+  </div>
+</footer>
